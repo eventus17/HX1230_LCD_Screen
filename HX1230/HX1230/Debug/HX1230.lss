@@ -1,0 +1,689 @@
+
+HX1230.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000366  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         000000d8  00800060  00000366  000003da  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000004b2  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000004e4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000070  00000000  00000000  00000520  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000123d  00000000  00000000  00000590  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000072b  00000000  00000000  000017cd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000675  00000000  00000000  00001ef8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000dc  00000000  00000000  00002570  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000480  00000000  00000000  0000264c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000469  00000000  00000000  00002acc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000050  00000000  00000000  00002f35  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	11 e0       	ldi	r17, 0x01	; 1
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e6 e6       	ldi	r30, 0x66	; 102
+  68:	f3 e0       	ldi	r31, 0x03	; 3
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a8 33       	cpi	r26, 0x38	; 56
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <main>
+  7a:	0c 94 b1 01 	jmp	0x362	; 0x362 <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <hx_send_data>:
+}
+
+void hx_send_data(unsigned char _data)
+{
+	// activate hx1230
+	CLEAR_HX_CE;
+  82:	a9 98       	cbi	0x15, 1	; 21
+	
+	// configure communication for data transfer
+	SET_HX_DIN;
+  84:	aa 9a       	sbi	0x15, 2	; 21
+	
+	// toggle clock
+	SET_HX_CLK;
+  86:	ab 9a       	sbi	0x15, 3	; 21
+	CLEAR_HX_CLK;
+  88:	ab 98       	cbi	0x15, 3	; 21
+	
+	// send the actual data, MSB fiHX_RST
+	for(int bit_position = 7; bit_position >= 0; bit_position--)
+  8a:	27 e0       	ldi	r18, 0x07	; 7
+  8c:	30 e0       	ldi	r19, 0x00	; 0
+	{
+		// calculate bit to be send
+		if(((_data >> bit_position) & 1) == 1)
+  8e:	90 e0       	ldi	r25, 0x00	; 0
+  90:	ac 01       	movw	r20, r24
+  92:	02 2e       	mov	r0, r18
+  94:	02 c0       	rjmp	.+4      	; 0x9a <hx_send_data+0x18>
+  96:	55 95       	asr	r21
+  98:	47 95       	ror	r20
+  9a:	0a 94       	dec	r0
+  9c:	e2 f7       	brpl	.-8      	; 0x96 <hx_send_data+0x14>
+  9e:	40 ff       	sbrs	r20, 0
+  a0:	02 c0       	rjmp	.+4      	; 0xa6 <hx_send_data+0x24>
+		{
+			SET_HX_DIN;
+  a2:	aa 9a       	sbi	0x15, 2	; 21
+  a4:	01 c0       	rjmp	.+2      	; 0xa8 <hx_send_data+0x26>
+		}
+		else
+		{
+			CLEAR_HX_DIN;
+  a6:	aa 98       	cbi	0x15, 2	; 21
+		}
+		
+		// toggle clock
+		SET_HX_CLK;
+  a8:	ab 9a       	sbi	0x15, 3	; 21
+		CLEAR_HX_CLK;
+  aa:	ab 98       	cbi	0x15, 3	; 21
+	// toggle clock
+	SET_HX_CLK;
+	CLEAR_HX_CLK;
+	
+	// send the actual data, MSB fiHX_RST
+	for(int bit_position = 7; bit_position >= 0; bit_position--)
+  ac:	21 50       	subi	r18, 0x01	; 1
+  ae:	31 09       	sbc	r19, r1
+  b0:	78 f7       	brcc	.-34     	; 0x90 <hx_send_data+0xe>
+		SET_HX_CLK;
+		CLEAR_HX_CLK;
+	}
+	
+	// deactivate hx1230
+	SET_HX_CE;
+  b2:	a9 9a       	sbi	0x15, 1	; 21
+  b4:	08 95       	ret
+
+000000b6 <hx_send_command>:
+}
+
+void hx_send_command(unsigned char _command)
+{
+	// activate hx1230
+	CLEAR_HX_CE;
+  b6:	a9 98       	cbi	0x15, 1	; 21
+	
+	// configure communication for command transfer
+	CLEAR_HX_DIN;
+  b8:	aa 98       	cbi	0x15, 2	; 21
+	
+	// toggle clock
+	SET_HX_CLK;
+  ba:	ab 9a       	sbi	0x15, 3	; 21
+	CLEAR_HX_CLK;
+  bc:	ab 98       	cbi	0x15, 3	; 21
+	
+	// send the actual command, MSB fiHX_RST
+	for(int bit_position = 7; bit_position >= 0; bit_position--)
+  be:	27 e0       	ldi	r18, 0x07	; 7
+  c0:	30 e0       	ldi	r19, 0x00	; 0
+	{
+		// calculate bit to be send
+		if(((_command >> bit_position) & 1) == 1)
+  c2:	90 e0       	ldi	r25, 0x00	; 0
+  c4:	ac 01       	movw	r20, r24
+  c6:	02 2e       	mov	r0, r18
+  c8:	02 c0       	rjmp	.+4      	; 0xce <hx_send_command+0x18>
+  ca:	55 95       	asr	r21
+  cc:	47 95       	ror	r20
+  ce:	0a 94       	dec	r0
+  d0:	e2 f7       	brpl	.-8      	; 0xca <hx_send_command+0x14>
+  d2:	40 ff       	sbrs	r20, 0
+  d4:	02 c0       	rjmp	.+4      	; 0xda <hx_send_command+0x24>
+		{
+			SET_HX_DIN;
+  d6:	aa 9a       	sbi	0x15, 2	; 21
+  d8:	01 c0       	rjmp	.+2      	; 0xdc <hx_send_command+0x26>
+		}
+		else
+		{
+			CLEAR_HX_DIN;
+  da:	aa 98       	cbi	0x15, 2	; 21
+		}
+		
+		// toggle clock
+		SET_HX_CLK;
+  dc:	ab 9a       	sbi	0x15, 3	; 21
+		CLEAR_HX_CLK;
+  de:	ab 98       	cbi	0x15, 3	; 21
+	// toggle clock
+	SET_HX_CLK;
+	CLEAR_HX_CLK;
+	
+	// send the actual command, MSB fiHX_RST
+	for(int bit_position = 7; bit_position >= 0; bit_position--)
+  e0:	21 50       	subi	r18, 0x01	; 1
+  e2:	31 09       	sbc	r19, r1
+  e4:	78 f7       	brcc	.-34     	; 0xc4 <hx_send_command+0xe>
+		SET_HX_CLK;
+		CLEAR_HX_CLK;
+	}
+	
+	// deactivate hx1230
+	SET_HX_CE;
+  e6:	a9 9a       	sbi	0x15, 1	; 21
+  e8:	08 95       	ret
+
+000000ea <init_hx1230_control>:
+#include <util/delay.h>
+
+void init_hx1230_control(void)
+{
+	// set required pins as output
+	HX1230_DDR |= ((1 << HX_RST) | (1 << HX_CE) | (1 << HX_DIN) | (1 << HX_CLK));
+  ea:	84 b3       	in	r24, 0x14	; 20
+  ec:	8f 60       	ori	r24, 0x0F	; 15
+  ee:	84 bb       	out	0x14, r24	; 20
+	
+	// set idle state
+	CLEAR_HX_CLK;
+  f0:	ab 98       	cbi	0x15, 3	; 21
+	CLEAR_HX_RST;
+  f2:	a8 98       	cbi	0x15, 0	; 21
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  f4:	2f ef       	ldi	r18, 0xFF	; 255
+  f6:	80 e7       	ldi	r24, 0x70	; 112
+  f8:	92 e0       	ldi	r25, 0x02	; 2
+  fa:	21 50       	subi	r18, 0x01	; 1
+  fc:	80 40       	sbci	r24, 0x00	; 0
+  fe:	90 40       	sbci	r25, 0x00	; 0
+ 100:	e1 f7       	brne	.-8      	; 0xfa <init_hx1230_control+0x10>
+ 102:	00 c0       	rjmp	.+0      	; 0x104 <init_hx1230_control+0x1a>
+ 104:	00 00       	nop
+	_delay_ms(50);
+	SET_HX_RST;
+ 106:	a8 9a       	sbi	0x15, 0	; 21
+	CLEAR_HX_CE;
+ 108:	a9 98       	cbi	0x15, 1	; 21
+ 10a:	8f e9       	ldi	r24, 0x9F	; 159
+ 10c:	9f e0       	ldi	r25, 0x0F	; 15
+ 10e:	01 97       	sbiw	r24, 0x01	; 1
+ 110:	f1 f7       	brne	.-4      	; 0x10e <init_hx1230_control+0x24>
+ 112:	00 c0       	rjmp	.+0      	; 0x114 <init_hx1230_control+0x2a>
+ 114:	00 00       	nop
+	_delay_ms(1);
+	SET_HX_CE;
+ 116:	a9 9a       	sbi	0x15, 1	; 21
+ 118:	8f e9       	ldi	r24, 0x9F	; 159
+ 11a:	9f e0       	ldi	r25, 0x0F	; 15
+ 11c:	01 97       	sbiw	r24, 0x01	; 1
+ 11e:	f1 f7       	brne	.-4      	; 0x11c <init_hx1230_control+0x32>
+ 120:	00 c0       	rjmp	.+0      	; 0x122 <init_hx1230_control+0x38>
+ 122:	00 00       	nop
+	_delay_ms(1);
+	
+	// commands needed to initialize hx1230 display
+	// found within a chinese data sheet
+	
+	hx_send_command(0x2f);
+ 124:	8f e2       	ldi	r24, 0x2F	; 47
+ 126:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0x90);
+ 12a:	80 e9       	ldi	r24, 0x90	; 144
+ 12c:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0xa6);
+ 130:	86 ea       	ldi	r24, 0xA6	; 166
+ 132:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0xa4);
+ 136:	84 ea       	ldi	r24, 0xA4	; 164
+ 138:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0xaf);
+ 13c:	8f ea       	ldi	r24, 0xAF	; 175
+ 13e:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	
+	hx_send_command(0x40);
+ 142:	80 e4       	ldi	r24, 0x40	; 64
+ 144:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0xb0);
+ 148:	80 eb       	ldi	r24, 0xB0	; 176
+ 14a:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0x10);
+ 14e:	80 e1       	ldi	r24, 0x10	; 16
+ 150:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0x00);
+ 154:	80 e0       	ldi	r24, 0x00	; 0
+ 156:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+ 15a:	08 95       	ret
+
+0000015c <hx_set_coordinates>:
+	// deactivate hx1230
+	SET_HX_CE;
+}
+
+void hx_set_coordinates(unsigned char _x, unsigned char _y)
+{
+ 15c:	cf 93       	push	r28
+ 15e:	c8 2f       	mov	r28, r24
+	// 0, 0 is the upper left corner
+	
+	hx_send_command(0xB0 + _y);
+ 160:	80 eb       	ldi	r24, 0xB0	; 176
+ 162:	86 0f       	add	r24, r22
+ 164:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0x10 | ((_x & 0x7F) >> 4));
+ 168:	8c 2f       	mov	r24, r28
+ 16a:	8f 77       	andi	r24, 0x7F	; 127
+ 16c:	82 95       	swap	r24
+ 16e:	8f 70       	andi	r24, 0x0F	; 15
+ 170:	80 61       	ori	r24, 0x10	; 16
+ 172:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+	hx_send_command(0x0F & _x);
+ 176:	8c 2f       	mov	r24, r28
+ 178:	8f 70       	andi	r24, 0x0F	; 15
+ 17a:	0e 94 5b 00 	call	0xb6	; 0xb6 <hx_send_command>
+}
+ 17e:	cf 91       	pop	r28
+ 180:	08 95       	ret
+
+00000182 <hx_clear_screen>:
+
+void hx_clear_screen(void)
+{
+ 182:	cf 93       	push	r28
+ 184:	df 93       	push	r29
+	unsigned char col, row;
+	
+	hx_set_coordinates(0, 0);
+ 186:	60 e0       	ldi	r22, 0x00	; 0
+ 188:	80 e0       	ldi	r24, 0x00	; 0
+ 18a:	0e 94 ae 00 	call	0x15c	; 0x15c <hx_set_coordinates>
+ 18e:	d9 e0       	ldi	r29, 0x09	; 9
+ 190:	07 c0       	rjmp	.+14     	; 0x1a0 <hx_clear_screen+0x1e>
+	
+	for(row = 0; row <= HX_MAX_ROW_ROOT; row ++)
+	{
+		for(col = 0; col <= HX_MAX_COL; col ++)
+		{
+			hx_send_data(0x00);
+ 192:	80 e0       	ldi	r24, 0x00	; 0
+ 194:	0e 94 41 00 	call	0x82	; 0x82 <hx_send_data>
+ 198:	c1 50       	subi	r28, 0x01	; 1
+	
+	hx_set_coordinates(0, 0);
+	
+	for(row = 0; row <= HX_MAX_ROW_ROOT; row ++)
+	{
+		for(col = 0; col <= HX_MAX_COL; col ++)
+ 19a:	d9 f7       	brne	.-10     	; 0x192 <hx_clear_screen+0x10>
+ 19c:	d1 50       	subi	r29, 0x01	; 1
+{
+	unsigned char col, row;
+	
+	hx_set_coordinates(0, 0);
+	
+	for(row = 0; row <= HX_MAX_ROW_ROOT; row ++)
+ 19e:	11 f0       	breq	.+4      	; 0x1a4 <hx_clear_screen+0x22>
+	hx_send_command(0x10 | ((_x & 0x7F) >> 4));
+	hx_send_command(0x0F & _x);
+}
+
+void hx_clear_screen(void)
+{
+ 1a0:	c1 e6       	ldi	r28, 0x61	; 97
+ 1a2:	f7 cf       	rjmp	.-18     	; 0x192 <hx_clear_screen+0x10>
+		for(col = 0; col <= HX_MAX_COL; col ++)
+		{
+			hx_send_data(0x00);
+		}
+	}
+}
+ 1a4:	df 91       	pop	r29
+ 1a6:	cf 91       	pop	r28
+ 1a8:	08 95       	ret
+
+000001aa <hx_fill_screen>:
+
+void hx_fill_screen(void)
+{
+ 1aa:	cf 93       	push	r28
+ 1ac:	df 93       	push	r29
+	unsigned char col, row;
+	
+	hx_set_coordinates(0, 0);
+ 1ae:	60 e0       	ldi	r22, 0x00	; 0
+ 1b0:	80 e0       	ldi	r24, 0x00	; 0
+ 1b2:	0e 94 ae 00 	call	0x15c	; 0x15c <hx_set_coordinates>
+ 1b6:	d9 e0       	ldi	r29, 0x09	; 9
+ 1b8:	07 c0       	rjmp	.+14     	; 0x1c8 <hx_fill_screen+0x1e>
+	
+	for(row = 0; row < 9; row ++)
+	{
+		for(col = 0; col < 96; col ++)
+		{
+			hx_send_data(0xFF);
+ 1ba:	8f ef       	ldi	r24, 0xFF	; 255
+ 1bc:	0e 94 41 00 	call	0x82	; 0x82 <hx_send_data>
+ 1c0:	c1 50       	subi	r28, 0x01	; 1
+	
+	hx_set_coordinates(0, 0);
+	
+	for(row = 0; row < 9; row ++)
+	{
+		for(col = 0; col < 96; col ++)
+ 1c2:	d9 f7       	brne	.-10     	; 0x1ba <hx_fill_screen+0x10>
+ 1c4:	d1 50       	subi	r29, 0x01	; 1
+{
+	unsigned char col, row;
+	
+	hx_set_coordinates(0, 0);
+	
+	for(row = 0; row < 9; row ++)
+ 1c6:	11 f0       	breq	.+4      	; 0x1cc <hx_fill_screen+0x22>
+		}
+	}
+}
+
+void hx_fill_screen(void)
+{
+ 1c8:	c0 e6       	ldi	r28, 0x60	; 96
+ 1ca:	f7 cf       	rjmp	.-18     	; 0x1ba <hx_fill_screen+0x10>
+		for(col = 0; col < 96; col ++)
+		{
+			hx_send_data(0xFF);
+		}
+	}
+}
+ 1cc:	df 91       	pop	r29
+ 1ce:	cf 91       	pop	r28
+ 1d0:	08 95       	ret
+
+000001d2 <hx_write_char>:
+
+void hx_write_char(const unsigned char *_character)
+{
+ 1d2:	0f 93       	push	r16
+ 1d4:	1f 93       	push	r17
+ 1d6:	cf 93       	push	r28
+ 1d8:	df 93       	push	r29
+ 1da:	ec 01       	movw	r28, r24
+ 1dc:	8c 01       	movw	r16, r24
+ 1de:	0a 5f       	subi	r16, 0xFA	; 250
+ 1e0:	1f 4f       	sbci	r17, 0xFF	; 255
+	for(int row_index = 0; row_index < 6; row_index ++)
+	{
+		hx_send_data((unsigned char)_character[row_index]);
+ 1e2:	89 91       	ld	r24, Y+
+ 1e4:	0e 94 41 00 	call	0x82	; 0x82 <hx_send_data>
+	}
+}
+
+void hx_write_char(const unsigned char *_character)
+{
+	for(int row_index = 0; row_index < 6; row_index ++)
+ 1e8:	c0 17       	cp	r28, r16
+ 1ea:	d1 07       	cpc	r29, r17
+ 1ec:	d1 f7       	brne	.-12     	; 0x1e2 <hx_write_char+0x10>
+	{
+		hx_send_data((unsigned char)_character[row_index]);
+	}
+ 1ee:	df 91       	pop	r29
+ 1f0:	cf 91       	pop	r28
+ 1f2:	1f 91       	pop	r17
+ 1f4:	0f 91       	pop	r16
+ 1f6:	08 95       	ret
+
+000001f8 <main>:
+#include <util/delay.h>
+
+
+int main(void)
+{
+	init_hx1230_control();
+ 1f8:	0e 94 75 00 	call	0xea	; 0xea <init_hx1230_control>
+ 1fc:	2f ef       	ldi	r18, 0xFF	; 255
+ 1fe:	89 e6       	ldi	r24, 0x69	; 105
+ 200:	98 e1       	ldi	r25, 0x18	; 24
+ 202:	21 50       	subi	r18, 0x01	; 1
+ 204:	80 40       	sbci	r24, 0x00	; 0
+ 206:	90 40       	sbci	r25, 0x00	; 0
+ 208:	e1 f7       	brne	.-8      	; 0x202 <main+0xa>
+ 20a:	00 c0       	rjmp	.+0      	; 0x20c <main+0x14>
+ 20c:	00 00       	nop
+	_delay_ms(500);
+	
+	hx_fill_screen();
+ 20e:	0e 94 d5 00 	call	0x1aa	; 0x1aa <hx_fill_screen>
+ 212:	2f ef       	ldi	r18, 0xFF	; 255
+ 214:	87 ea       	ldi	r24, 0xA7	; 167
+ 216:	91 e6       	ldi	r25, 0x61	; 97
+ 218:	21 50       	subi	r18, 0x01	; 1
+ 21a:	80 40       	sbci	r24, 0x00	; 0
+ 21c:	90 40       	sbci	r25, 0x00	; 0
+ 21e:	e1 f7       	brne	.-8      	; 0x218 <main+0x20>
+ 220:	00 c0       	rjmp	.+0      	; 0x222 <main+0x2a>
+ 222:	00 00       	nop
+	_delay_ms(2000);
+	hx_clear_screen();
+ 224:	0e 94 c1 00 	call	0x182	; 0x182 <hx_clear_screen>
+	
+	hx_set_coordinates(0, 0);
+ 228:	60 e0       	ldi	r22, 0x00	; 0
+ 22a:	80 e0       	ldi	r24, 0x00	; 0
+ 22c:	0e 94 ae 00 	call	0x15c	; 0x15c <hx_set_coordinates>
+	hx_write_char(hx_A);
+ 230:	82 e3       	ldi	r24, 0x32	; 50
+ 232:	91 e0       	ldi	r25, 0x01	; 1
+ 234:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_B);
+ 238:	8c e2       	ldi	r24, 0x2C	; 44
+ 23a:	91 e0       	ldi	r25, 0x01	; 1
+ 23c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_C);
+ 240:	86 e2       	ldi	r24, 0x26	; 38
+ 242:	91 e0       	ldi	r25, 0x01	; 1
+ 244:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_D);
+ 248:	80 e2       	ldi	r24, 0x20	; 32
+ 24a:	91 e0       	ldi	r25, 0x01	; 1
+ 24c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_write_char(hx_E);
+ 250:	8a e1       	ldi	r24, 0x1A	; 26
+ 252:	91 e0       	ldi	r25, 0x01	; 1
+ 254:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_F);
+ 258:	84 e1       	ldi	r24, 0x14	; 20
+ 25a:	91 e0       	ldi	r25, 0x01	; 1
+ 25c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_G);
+ 260:	8e e0       	ldi	r24, 0x0E	; 14
+ 262:	91 e0       	ldi	r25, 0x01	; 1
+ 264:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_H);
+ 268:	88 e0       	ldi	r24, 0x08	; 8
+ 26a:	91 e0       	ldi	r25, 0x01	; 1
+ 26c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_write_char(hx_I);
+ 270:	82 e0       	ldi	r24, 0x02	; 2
+ 272:	91 e0       	ldi	r25, 0x01	; 1
+ 274:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_J);
+ 278:	8c ef       	ldi	r24, 0xFC	; 252
+ 27a:	90 e0       	ldi	r25, 0x00	; 0
+ 27c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_K);
+ 280:	86 ef       	ldi	r24, 0xF6	; 246
+ 282:	90 e0       	ldi	r25, 0x00	; 0
+ 284:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_L);
+ 288:	80 ef       	ldi	r24, 0xF0	; 240
+ 28a:	90 e0       	ldi	r25, 0x00	; 0
+ 28c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_set_coordinates(0, 1);
+ 290:	61 e0       	ldi	r22, 0x01	; 1
+ 292:	80 e0       	ldi	r24, 0x00	; 0
+ 294:	0e 94 ae 00 	call	0x15c	; 0x15c <hx_set_coordinates>
+	
+	hx_write_char(hx_M);
+ 298:	8a ee       	ldi	r24, 0xEA	; 234
+ 29a:	90 e0       	ldi	r25, 0x00	; 0
+ 29c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_N);
+ 2a0:	84 ee       	ldi	r24, 0xE4	; 228
+ 2a2:	90 e0       	ldi	r25, 0x00	; 0
+ 2a4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_O);
+ 2a8:	8e ed       	ldi	r24, 0xDE	; 222
+ 2aa:	90 e0       	ldi	r25, 0x00	; 0
+ 2ac:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_P);
+ 2b0:	88 ed       	ldi	r24, 0xD8	; 216
+ 2b2:	90 e0       	ldi	r25, 0x00	; 0
+ 2b4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_write_char(hx_Q);
+ 2b8:	82 ed       	ldi	r24, 0xD2	; 210
+ 2ba:	90 e0       	ldi	r25, 0x00	; 0
+ 2bc:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_R);
+ 2c0:	8c ec       	ldi	r24, 0xCC	; 204
+ 2c2:	90 e0       	ldi	r25, 0x00	; 0
+ 2c4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_S);
+ 2c8:	86 ec       	ldi	r24, 0xC6	; 198
+ 2ca:	90 e0       	ldi	r25, 0x00	; 0
+ 2cc:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_T);
+ 2d0:	80 ec       	ldi	r24, 0xC0	; 192
+ 2d2:	90 e0       	ldi	r25, 0x00	; 0
+ 2d4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_write_char(hx_U);
+ 2d8:	8a eb       	ldi	r24, 0xBA	; 186
+ 2da:	90 e0       	ldi	r25, 0x00	; 0
+ 2dc:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_V);
+ 2e0:	84 eb       	ldi	r24, 0xB4	; 180
+ 2e2:	90 e0       	ldi	r25, 0x00	; 0
+ 2e4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_W);
+ 2e8:	8e ea       	ldi	r24, 0xAE	; 174
+ 2ea:	90 e0       	ldi	r25, 0x00	; 0
+ 2ec:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_X);
+ 2f0:	88 ea       	ldi	r24, 0xA8	; 168
+ 2f2:	90 e0       	ldi	r25, 0x00	; 0
+ 2f4:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	
+	hx_write_char(hx_Y);
+ 2f8:	82 ea       	ldi	r24, 0xA2	; 162
+ 2fa:	90 e0       	ldi	r25, 0x00	; 0
+ 2fc:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_Z);
+ 300:	8c e9       	ldi	r24, 0x9C	; 156
+ 302:	90 e0       	ldi	r25, 0x00	; 0
+ 304:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_set_coordinates(0, 2);
+ 308:	62 e0       	ldi	r22, 0x02	; 2
+ 30a:	80 e0       	ldi	r24, 0x00	; 0
+ 30c:	0e 94 ae 00 	call	0x15c	; 0x15c <hx_set_coordinates>
+	
+	hx_write_char(hx_0);
+ 310:	86 e9       	ldi	r24, 0x96	; 150
+ 312:	90 e0       	ldi	r25, 0x00	; 0
+ 314:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_1);
+ 318:	80 e9       	ldi	r24, 0x90	; 144
+ 31a:	90 e0       	ldi	r25, 0x00	; 0
+ 31c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_2);
+ 320:	8a e8       	ldi	r24, 0x8A	; 138
+ 322:	90 e0       	ldi	r25, 0x00	; 0
+ 324:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_3);
+ 328:	84 e8       	ldi	r24, 0x84	; 132
+ 32a:	90 e0       	ldi	r25, 0x00	; 0
+ 32c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_4);
+ 330:	8e e7       	ldi	r24, 0x7E	; 126
+ 332:	90 e0       	ldi	r25, 0x00	; 0
+ 334:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_5);
+ 338:	88 e7       	ldi	r24, 0x78	; 120
+ 33a:	90 e0       	ldi	r25, 0x00	; 0
+ 33c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_6);
+ 340:	82 e7       	ldi	r24, 0x72	; 114
+ 342:	90 e0       	ldi	r25, 0x00	; 0
+ 344:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_7);
+ 348:	8c e6       	ldi	r24, 0x6C	; 108
+ 34a:	90 e0       	ldi	r25, 0x00	; 0
+ 34c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_8);
+ 350:	86 e6       	ldi	r24, 0x66	; 102
+ 352:	90 e0       	ldi	r25, 0x00	; 0
+ 354:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+	hx_write_char(hx_9);
+ 358:	80 e6       	ldi	r24, 0x60	; 96
+ 35a:	90 e0       	ldi	r25, 0x00	; 0
+ 35c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <hx_write_char>
+ 360:	ff cf       	rjmp	.-2      	; 0x360 <main+0x168>
+
+00000362 <_exit>:
+ 362:	f8 94       	cli
+
+00000364 <__stop_program>:
+ 364:	ff cf       	rjmp	.-2      	; 0x364 <__stop_program>
