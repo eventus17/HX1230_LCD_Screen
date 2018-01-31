@@ -8,6 +8,9 @@
 #include "global.h"
 #include "hx1230.h"
 #include <util/delay.h>
+#include "hx_8x6_characters.h"
+#include <string.h>
+
 
 void init_hx1230_control(void)
 {
@@ -51,11 +54,11 @@ void hx_send_data(unsigned char _data)
 	SET_HX_CLK;
 	CLEAR_HX_CLK;
 	
-	// send the actual data, MSB fiHX_RST
+	// send the actual data, MSB first
 	for(int bit_position = 7; bit_position >= 0; bit_position--)
 	{
 		// calculate bit to be send
-		if(((_data >> bit_position) & 1) == 1)
+		if(((_data >> bit_position) & 1))
 		{
 			SET_HX_DIN;
 		}
@@ -85,11 +88,11 @@ void hx_send_command(unsigned char _command)
 	SET_HX_CLK;
 	CLEAR_HX_CLK;
 	
-	// send the actual command, MSB fiHX_RST
+	// send the actual command, MSB first
 	for(int bit_position = 7; bit_position >= 0; bit_position--)
 	{
 		// calculate bit to be send
-		if(((_command >> bit_position) & 1) == 1)
+		if(((_command >> bit_position) & 1))
 		{
 			SET_HX_DIN;
 		}
@@ -146,10 +149,20 @@ void hx_fill_screen(void)
 	}
 }
 
-void hx_write_char(const unsigned char *_character)
+void hx_write_char(const unsigned char _character)
 {
+	
 	for(int row_index = 0; row_index < 6; row_index ++)
 	{
-		hx_send_data((unsigned char)_character[row_index]);
+		hx_send_data(HX_character[_character][row_index]);
+	}
+}
+
+void hx_write_string(const char *_characters_array)
+{
+	int string_length = strlen(_characters_array);
+	for(int char_index = 0; char_index < string_length; char_index++)
+	{
+		hx_write_char((const unsigned char)(_characters_array[char_index]));
 	}
 }
