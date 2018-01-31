@@ -54,11 +54,11 @@ void hx_send_data(unsigned char _data)
 	SET_HX_CLK;
 	CLEAR_HX_CLK;
 	
-	// send the actual data, MSB fiHX_RST
+	// send the actual data, MSB first
 	for(int bit_position = 7; bit_position >= 0; bit_position--)
 	{
 		// calculate bit to be send
-		if(((_data >> bit_position) & 1) == 1)
+		if(((_data >> bit_position) & 1))
 		{
 			SET_HX_DIN;
 		}
@@ -88,11 +88,11 @@ void hx_send_command(unsigned char _command)
 	SET_HX_CLK;
 	CLEAR_HX_CLK;
 	
-	// send the actual command, MSB fiHX_RST
+	// send the actual command, MSB first
 	for(int bit_position = 7; bit_position >= 0; bit_position--)
 	{
 		// calculate bit to be send
-		if(((_command >> bit_position) & 1) == 1)
+		if(((_command >> bit_position) & 1))
 		{
 			SET_HX_DIN;
 		}
